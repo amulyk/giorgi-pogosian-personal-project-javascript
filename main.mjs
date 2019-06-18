@@ -26,7 +26,7 @@ let teacher_data = {
       last: "Doe"
     },
     image: "string",
-    dateOfBirth: "17.06.1991", // format date
+    dateOfBirth: "17.06.1991",
     emails: [
       {
         email: "john.doe@gmail.com",
@@ -39,7 +39,7 @@ let teacher_data = {
         primary: true
       }
     ],
-    sex: "male", // male or female
+    sex: "male",
     subjects: [
       {
         subject: "History"
@@ -48,22 +48,51 @@ let teacher_data = {
     description: "string",
 };
 
-let pupil_data = {
+const teacherUpdatedProfile = {
   name: {
-    first: "Jane",
-    last: "Doe"
-  },
-  image: "string",
-  dateOfBirth: "11.08.1999", // format date
-  phones: [
-    {
-      phone: "string",
-      primary: true
-    }
-  ],
-  sex: "female", // male OR female
-  description: "string"
+      first: "Pitter"
+  }
 };
+
+// let pupil_schema = {
+//   "name": {
+//     "first": "string",
+//     "last": "string"
+//   },
+//   "image": "string",
+//   "dateOfBirth": "string", // format date
+//   "phones": [
+//     {
+//       "phone": "string",
+//       "primary": "boolean"
+//     }
+//   ],
+//   "sex": "string", // male OR female
+//   "description": "string"
+// }
+
+// let pupil_data = {
+//   name: {
+//     first: "Jane",
+//     last: "Doe"
+//   },
+//   image: "string",
+//   dateOfBirth: "11.08.1999",
+//   phones: [
+//     {
+//       phone: "string",
+//       primary: true
+//     }
+//   ],
+//   sex: "female",
+//   description: "string"
+// }
+
+// const pupilUpdatedProfile = {
+//   name: {
+//       first: "Kate"
+//   }
+// }
 
 (async () => {
     const lms = new LMSModel();
@@ -76,24 +105,16 @@ let pupil_data = {
     const teachers = new TeachersModel();
     let teacherId = await teachers.add(teacher_data);
     // console.log(await teachers.read(teacherId));
-    const teacherUpdatedProfile = {
-        name: {
-            first:"Pitter"
-        }
-    };
+
     teacherId = await teachers.update(teacherId, teacherUpdatedProfile);
     console.log(teacherId);
     // console.log(await teachers.remove(teacherId));
     
     
-    const pupils = new PupilsModel();
-    let pupilId = await pupils.add(pupil_data);
-    console.log(await pupils.read(pupilId));
-    const pupilUpdatedProfile = {
-      name: {
-          first:"Kate"
-      }
-    };
-    pupilId = await pupil.update(pupilId, pupilUpdatedProfile);
-    console.log(await pupil.remove(pupilId));
+    // const pupils = new PupilsModel();
+    // let pupilId = await pupils.add(pupil_data);
+    // console.log(await pupils.read(pupilId));
+
+    // pupilId = await pupil.update(pupilId, pupilUpdatedProfile);
+    // console.log(await pupil.remove(pupilId));
 })();
