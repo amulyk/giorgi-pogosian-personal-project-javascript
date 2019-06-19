@@ -4,7 +4,8 @@ export class GroupsModel {
         this.database = new Map();
         this.schema = {
             id: 'JEF5H43H',
-            room: 237
+            room: 237,
+            pupils: []
         };
     }
 
@@ -30,6 +31,12 @@ export class GroupsModel {
                     },
                     room: {
                         value: room,
+                        writable: true,
+                        enumerable: true
+                    },
+                    pupils: {
+                        value: [],
+                        writable: true,
                         enumerable: true
                     }
                 });
@@ -39,15 +46,56 @@ export class GroupsModel {
         });
     }
 
-    addPupil(id, pupil) {
+    removePupil(groupId, id) {
         return new Promise((resolve, reject) => {
+            if(typeof groupId !== 'string') {
+                reject("Id should be a string");
+            }
             if(typeof id !== 'string') {
+                reject("Pupil should be an string");
+            }
+            if(!this.database.has(groupId)) {
+                reject("Group not found");
+            } else {
+                let pupilsArray = this.database.get(groupId).pupils;
+                for(let i = 0; i < pupilsArray.length; i++) {
+                    if(pupilsArray[i].id === id) {
+                        resolve(pupilsArray.splice(pupilsArray.indexOf(pupilsArray[i]), 1));
+                    };
+                }
+            }
+        });
+    }
+
+    addPupil(groupId, pupil) {
+        return new Promise((resolve, reject) => {
+            if(typeof groupId !== 'string') {
                 reject("Id should be a string");
             }
             if(typeof pupil !== 'object') {
                 reject("Pupil should be an object");
             }
-            resolve();
+            if(!this.database.has(groupId)) {
+                reject("Group not found");
+            } else {
+                resolve(this.database.get(groupId).pupils.push(pupil));
+            }
+        });
+    }
+
+    update(groupId, updated) {
+        return new Promise((resolve, reject) => {
+            if(typeof groupId !== 'string') {
+                reject("Id should be a string");
+            }
+            if(typeof updated !== 'object') {
+                reject("Updated should be an object");
+            }
+            validate(this.schema, updated, true);
+            let props = Object.getOwnPropertyNames(updated);
+            for(let prop of props) {
+                resolve(this.database.get(groupId)[prop] = updated[prop]);
+            }
         });
     }
 
@@ -65,10 +113,10 @@ export class GroupsModel {
         });
     }
 
-    readAll() {
+    async readAll() {
         return new Promise((resolve, reject) => {
             if(arguments.length > 0) {
-                reject("readAll() does not have any parameters");
+                reject("readAll() does not receive any parameters");
             } else {
                 resolve([...this.database.values()]);
             }

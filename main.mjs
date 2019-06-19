@@ -77,10 +77,14 @@ const pupilUpdatedProfile = {
   }
 };
 
+const groupUpdated = {
+  room: 237
+};
+
 (async () => {
     const lms = new LMSModel();
     // console.log(await lms.remove(history));
-    // console.log(await lms.add(history));
+    console.log(await lms.add(history));
     // console.log(await lms.add(maths));
     // console.log(await lms.readAll());
 
@@ -95,24 +99,56 @@ const pupilUpdatedProfile = {
     
     const pupils = new PupilsModel();
     const pupil = await pupils.add(pupil_data);
+    
+    const pupil2 = await pupils.add({
+      name: {
+        first: "TEST",
+        last: "TEST"
+      },
+      image: "string",
+      dateOfBirth: "11.08.1999",
+      phones: [
+        {
+          phone: "string",
+          primary: true
+        }
+      ],
+      sex: "female",
+      description: "string"
+    });
+
     // console.log(await pupils.read(pupil.id));
     // console.log(await pupils.update(pupil.id, pupilUpdatedProfile));
     // pupils.remove(pupil.id);
 
     const room = 236;
     const groups = new GroupsModel();
-    const group = await groups.add(room);
-    // console.log(await groups.removePupil(groupId, pupil.id));
-    // console.log(await groups.addPupil(group, pupil));
-    console.log(group);
-    // groups.update(groupId, {
-    //   room: 237
-    // });
+    const groupId = await groups.add(room);
+    await groups.addPupil(groupId, pupil);
+    await groups.addPupil(groupId, pupil2);
+    // console.log(await groups.removePupil(groupId, pupil2.id));
+    // console.log(await groups.update(groupId, groupUpdated));
     // console.log(await groups.read(groupId));
     // console.log(await groups.readAll());
 
     const pupilId = pupil.id;
+
+    const record = {
+      pupilId: pupilId,
+      teacherId: teacherId,
+      subjectId: history.id,
+      lesson: 1,
+      mark: 9
+    };
+
     const gradebooks = new GradebooksModel(groups, teachers, lms);
     const level = 1;
-    const gradebook = gradebooks.add(level, group.id);
+    const gradebookId = await gradebooks.add(level, groupId);
+    // console.log(gradebookId)
+    // console.log(await gradebooks.clear());
+    await gradebooks.addRecord(gradebookId, record);
+    const oliver = await gradebooks.read(gradebookId, pupilId);
+    // console.log(oliver);
+    const students = await gradebooks.readAll(gradebookId);
+    console.log(students);
 })();

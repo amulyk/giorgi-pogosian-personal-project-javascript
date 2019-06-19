@@ -45,6 +45,12 @@ export class LMSModel {
         });
     }
 
+    read(id) {
+        return new Promise((resolve, reject) => {
+            resolve(this.database.get(id));
+        });
+    }
+
     readAll() {
         return new Promise((resolve, reject) => {
             if(arguments.length > 0) {

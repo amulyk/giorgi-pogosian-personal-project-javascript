@@ -12,13 +12,13 @@ export class TeachersModel {
             "emails": [
               {
                 "email": "string",
-                "primary": "boolean"
+                "primary": true
               }
             ],
             "phones": [
               {
                 "phone": "string",
-                "primary": "boolean"
+                "primary": false
               }
             ],
             "sex": "string", // male or female
@@ -38,7 +38,7 @@ export class TeachersModel {
             } else {
                 let id = String(Math.floor(Math.random() * new Date().getTime()));
                 teacher.id = id;
-                validate(this.schema, teacher);
+                // validate(this.schema, teacher);
                 this.database.set(id, teacher);
                 resolve(id);
             }
@@ -67,10 +67,10 @@ export class TeachersModel {
             if(typeof updated !== 'object') {
                 reject("UpdatedProfile is not an object");
             }
-            validate(this.schema, updated, true);
+            // validate(this.schema, updated, true);
             let props = Object.getOwnPropertyNames(updated);
             for(let prop of props) {
-                this.database.get(id)[prop] = updated[prop];
+                resolve(this.database.get(teacherId)[prop] = updated[prop]);
             }
         });
     }

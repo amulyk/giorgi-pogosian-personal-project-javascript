@@ -10,7 +10,7 @@ export let validate = (schema, data, flag = false) => { // false: add | true: up
                     validate(schema[item], data[item], flag);
                 }
             } else {
-                if(typeof data[item] !== schema[item]) {
+                if(typeof data[item] !== typeof schema[item]) {
                     throw new Error(`Error: invalid property type ${typeof data[item]} for ${item}`);
                 } else {
                     if(flag === true) {

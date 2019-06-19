@@ -12,7 +12,7 @@ export class PupilsModel {
             "phones": [
               {
                 "phone": "string",
-                "primary": "boolean"
+                "primary": true
               }
             ],
             "sex": "string", // male OR female
@@ -59,7 +59,7 @@ export class PupilsModel {
             validate(this.schema, updated, true);
             let props = Object.getOwnPropertyNames(updated);
             for(let prop of props) {
-                this.database.get(id)[prop] = updated[prop];
+                resolve(this.database.get(id)[prop] = updated[prop]);
             }
         });
     }
