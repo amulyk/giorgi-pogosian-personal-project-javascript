@@ -14,7 +14,7 @@ export let validate = (schema, data, flag = false) => { // false: add | true: up
                     throw new Error(`Error: invalid property type ${typeof data[item]} for ${item}`);
                 } else {
                     if(flag === true) {
-                        console.log('test');
+                        console.log('update');
                     }
                 }
             }

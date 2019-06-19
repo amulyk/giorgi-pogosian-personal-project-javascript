@@ -34,19 +34,13 @@ export class TeachersModel {
     add(teacher) {
         return new Promise((resolve, reject) => {
             if(typeof teacher !== 'object') {
-                reject("Parameter is not an object or id is not defined");
+                reject("Parameter is not an object");
             } else {
                 let id = String(Math.floor(Math.random() * new Date().getTime()));
                 teacher.id = id;
                 validate(this.schema, teacher);
                 this.database.set(id, teacher);
                 resolve(id);
-                // if(validate(this.schema, teacher)) {
-                //     this.database.set(id, teacher);
-                //     resolve(id);
-                // } else {
-                //     reject("Error: object is not valid");
-                // }
             }
         });
     }
@@ -74,11 +68,10 @@ export class TeachersModel {
                 reject("UpdatedProfile is not an object");
             }
             validate(this.schema, updated, true);
-            // if(validate(this.schema, updated, true)) {
-            //     resolve(true);
-            // } else {
-            //     reject("Update error");
-            // }
+            let props = Object.getOwnPropertyNames(updated);
+            for(let prop of props) {
+                this.database.get(id)[prop] = updated[prop];
+            }
         });
     }
 
